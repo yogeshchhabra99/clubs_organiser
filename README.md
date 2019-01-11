@@ -8,6 +8,9 @@ Clubs-organizer is a mobile app developed to help Students manage the Club Activ
 
 Clubs-organizers is driven on flutter, which helps to build beautiful and expressive UI and backed up by google's powerful Firebase.
 
+## Our Aim
+Our aim as a developer is to provide clean, beautiful, modern UI with smooth animations.
+
 ## contribute
 If you want to contribute fork this repo, code your changes, create a pull request. To join our discussion group mail chhabra99yogesh@gmail.com or 2017csb1119@iitrpr.ac.in
 
