@@ -1,6 +1,6 @@
 # clubs-organiser
 
-Clubs-organizer is a mobile app developed to help College Students manage the Club Activities in a College. This will help you create your club, invite people, create events, call polls, start discussions.
+Clubs-organizer is a mobile app developed to help Students manage the Club Activities in a College. This will let you create your club, invite people, create events, invite members to events( they may accept or reject the invitation, which a coordinator will know), call polls, start discussions.
 
 ## Technologies
 1. [Flutter]( https://flutter.io/ )
