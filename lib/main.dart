@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'dart:async';
 void main() => runApp(MyApp());
 /*colors(rgb)
 (168,150,255)(184,174,246)(203,194,246)(221,214,256)
@@ -35,20 +35,41 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-
- // var news = ()=> ;
+  @override
+    void initState() {
+      // TODO: implement initState
+      playNews();
+      super.initState();
+    }
+  @override
+    void dispose() {
+        // TODO: implement dispose
+      super.dispose();
+    }
+  playNews(){
+    var duration= Duration(seconds: 2);
+    return new Timer(duration,(){
+      if(pageController.page!=3)
+        pageController.nextPage(duration: Duration(milliseconds: 500),curve: Curves.easeIn);
+      else  
+        pageController.animateToPage(0, duration: Duration(milliseconds: 500),curve: Curves.easeIn);
+        playNews();
+    });
+  }
 
   final pageController = new PageController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     /* bottomNavigationBar: BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
         child: new Container(
+          height: 50,
+          child: Center(child: Text("Nav Bar"),),
           decoration: BoxDecoration(
             color: Colors.lightBlue[100],
           ),
         ),
-      ),*/
+      ),
       body: Center(
         child: new Container(
           padding: EdgeInsets.all(15),
@@ -85,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Expanded(
-                                    flex: 6,
+                                    flex: 5,
                                     child: Text(
                                       "Yogesh Chhabra",
                                       style: TextStyle(
@@ -106,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                   Expanded(
-                                    flex: 3,
+                                    flex: 2,
                                     child: new Container(),
                                   ),
                                   Expanded(
@@ -121,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               children: <Widget>[
                                                 Text(
                                                   "$index Club Name",
-                                                  
+
                                                   style: TextStyle(
                                                       fontFamily: 'Karla',
                                                       fontSize: 15,
