@@ -58,15 +58,60 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   final pageController = new PageController();
+  var currentNav=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         child: new Container(
           height: 50,
-          child: Center(child: Text("Nav Bar"),),
+          child:  Container(
+            padding: EdgeInsets.all(4),
+            child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container( 
+                child:Center(child: IconButton(
+                  iconSize: 30,
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.more_vert,color: (currentNav==0)?Colors.lightBlue[300]:Colors.white),
+                  onPressed: ()=>setState(()=>currentNav=0),
+                )),
+                decoration: BoxDecoration(
+                  color: (currentNav==0)?Colors.white:Colors.lightBlue[200],
+                  borderRadius: BorderRadius.circular(10)
+                ),
+              ),
+              Container( 
+                child:Center(child: IconButton(
+                  iconSize: 30,
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.home,color: (currentNav==1)?Colors.lightBlue[300]:Colors.white),
+                  onPressed: ()=>setState(()=>currentNav=1),
+                )),
+                decoration: BoxDecoration(
+                  color: (currentNav==1)?Colors.white:Colors.lightBlue[200],
+                  borderRadius: BorderRadius.circular(10)
+                ),
+              ),
+              Container( 
+                child:Center(child: IconButton(
+                  iconSize: 30,
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.calendar_today,color: (currentNav==2)?Colors.lightBlue[300]:Colors.white),
+                  onPressed: ()=>setState(()=>currentNav=2),
+                )),
+                decoration: BoxDecoration(
+                  color: (currentNav==2)?Colors.white:Colors.lightBlue[200],
+                  borderRadius: BorderRadius.circular(10)
+                ),
+              ),
+
+            ],
+          )),
           decoration: BoxDecoration(
-            color: Colors.lightBlue[100],
+            color: Colors.lightBlue[200],
           ),
         ),
       ),
@@ -127,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                   Expanded(
-                                    flex: 2,
+                                    flex: 3,
                                     child: new Container(),
                                   ),
                                   Expanded(
@@ -191,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   )),
               Expanded(
-                flex: 5,
+                flex: 3,
                 child: Container(),
               ),
               Expanded(
