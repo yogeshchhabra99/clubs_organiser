@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter/widgets.dart';
+import 'package:after_layout/after_layout.dart';
+
 void main() => runApp(MyApp());
 /*colors(rgb)
 (168,150,255)(184,174,246)(203,194,246)(221,214,256)
@@ -13,11 +16,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      
       title: 'Flutter Demo',
       theme: ThemeData(
         fontFamily: 'Karla',
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.teal
+        
       ),
+      
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       debugShowCheckedModeBanner: false,
     );
@@ -31,14 +37,58 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
+
+  
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin{
+  bool slided=true;
+  AnimationController dpAnimationController;
+ // AnimationController detailsAnimationController;
+ static var list = List<Container>.generate(10, (index) {
+                          return Container(
+                              padding: EdgeInsets.all(8),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "Item $index",
+                                  style: TextStyle(
+                                      fontFamily: 'Karla', fontSize: 15),
+                                )),
+                              ));
+                        });
+ var grids=GridView.count(
+                        crossAxisCount: 2,
+                        children: list,
+                        shrinkWrap: true,
+                      );
   @override
     void initState() {
       // TODO: implement initState
-      playNews();
+      
+      dpAnimationController = new AnimationController(
+        duration: const Duration(milliseconds: 2000), vsync: this)
+        ..addListener(() {
+                setState(() {
+                  // the state that has changed here is the animation object’s value
+                
+                });
+              });
+      // dpAnimationController = new AnimationController(
+      //   duration: const Duration(milliseconds: 4000), vsync: this)
+      //   ..addListener(() {
+      //           setState(() {
+      //             // the state that has changed here is the animation object’s value
+                
+      //           });
+      //         });
+              playNews();
+              
+      //WidgetsBinding.instance.addPoseFrameCallback
       super.initState();
     }
   @override
@@ -56,13 +106,17 @@ class _MyHomePageState extends State<MyHomePage> {
         playNews();
     });
   }
+  
 
   final pageController = new PageController();
   var currentNav=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       bottomNavigationBar: BottomAppBar(
+        elevation: 16,
+        
         child: new Container(
           height: 50,
           child:  Container(
@@ -75,11 +129,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 child:Center(child: IconButton(
                   iconSize: 30,
                   alignment: Alignment.center,
-                  icon: Icon(Icons.more_vert,color: (currentNav==0)?Colors.lightBlue[300]:Colors.white),
+                  icon: Icon(Icons.menu,color: (currentNav==0)?Colors.tealAccent[400]:Colors.white),
                   onPressed: ()=>setState(()=>currentNav=0),
                 )),
                 decoration: BoxDecoration(
-                  color: (currentNav==0)?Colors.white:Colors.lightBlue[200],
+                  color: (currentNav==0)?Colors.white:Colors.tealAccent[400],
                   borderRadius: BorderRadius.circular(10)
                 ),
               ),
@@ -87,11 +141,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 child:Center(child: IconButton(
                   iconSize: 30,
                   alignment: Alignment.center,
-                  icon: Icon(Icons.home,color: (currentNav==1)?Colors.lightBlue[300]:Colors.white),
+                  icon: Icon(Icons.home,color: (currentNav==1)?Colors.tealAccent[400]:Colors.white),
                   onPressed: ()=>setState(()=>currentNav=1),
                 )),
                 decoration: BoxDecoration(
-                  color: (currentNav==1)?Colors.white:Colors.lightBlue[200],
+                  color: (currentNav==1)?Colors.white:Colors.tealAccent[400],
                   borderRadius: BorderRadius.circular(10)
                 ),
               ),
@@ -99,11 +153,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 child:Center(child: IconButton(
                   iconSize: 30,
                   alignment: Alignment.center,
-                  icon: Icon(Icons.calendar_today,color: (currentNav==2)?Colors.lightBlue[300]:Colors.white),
+                  icon: Icon(Icons.calendar_today,color: (currentNav==2)?Colors.tealAccent[400]:Colors.white),
                   onPressed: ()=>setState(()=>currentNav=2),
                 )),
                 decoration: BoxDecoration(
-                  color: (currentNav==2)?Colors.white:Colors.lightBlue[200],
+                  color: (currentNav==2)?Colors.white:Colors.tealAccent[400],
                   borderRadius: BorderRadius.circular(10)
                 ),
               ),
@@ -111,13 +165,20 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           )),
           decoration: BoxDecoration(
-            color: Colors.lightBlue[200],
+            color: Colors.tealAccent[400],
           ),
         ),
       ),
-      body: Center(
+      body:new Container(
+        decoration: BoxDecoration(
+          /*image: DecorationImage(
+            image: AssetImage('assets/bg2.png')
+          )*/
+          color: Colors.black
+        ),
+        //child: Center(
         child: new Container(
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.fromLTRB(10, 1, 10, 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -133,17 +194,52 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: <Widget>[
                         new Expanded(
                             flex: 35,
-                            child: new Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.lightBlue[100],
+                            child: RotationTransition(
+                              turns: new Tween<double>(begin:4.00,end: 0.00).animate(
+                                CurvedAnimation(
+                                  parent: dpAnimationController,
+                                  curve: Curves.elasticOut
+                                )),
+                              child:SlideTransition(
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: new Container(
+                                padding: EdgeInsets.all(2),
+                                child: new Container(
+                                  decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage('assets/dp2.jpeg'),
+                                    fit: BoxFit.fill
+                                    
+                                  ),
+                                  //color: Colors.orange,
                                   shape: BoxShape.circle),
-                            )),
+                                ),,
+                              )
+                                
+                                  //child: Image.asset('assets/dp2.jpeg',),
+                                
+                              ),
+                              position: new Tween<Offset>(
+                                begin:Offset(-200.00, 0.00),
+                                end: Offset(00.00, 0.00)).animate(CurvedAnimation(
+                                  parent: dpAnimationController,
+                                  curve: Curves.easeOut
+                                )),
+                            ))),
                         new Expanded(flex: 5, child: new Container()),
                         new Expanded(
-                            flex: 60,
+                          flex: 60,
+                          child:RotationTransition(
+                            turns: new Tween<double>(begin:4.00,end: 0.00).animate(
+                              CurvedAnimation(
+                                parent: dpAnimationController,
+                                curve: Curves.elasticOut,
+                              )),
+                            child:SlideTransition(
                             child: new Container(
                               decoration: BoxDecoration(
-                                  color: Colors.lightBlue[100],
+                                  color: Colors.tealAccent[400],
                                   borderRadius: BorderRadius.circular(20)),
                               padding: EdgeInsets.all(19),
                               child: new Column(
@@ -172,7 +268,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                   Expanded(
-                                    flex: 3,
+                                    flex: 2,
                                     child: new Container(),
                                   ),
                                   Expanded(
@@ -231,7 +327,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                   )),
                                 ],
                               ),
-                            )),
+                            ),
+                            position: new Tween<Offset>(
+                                begin:Offset(0.00, -200.00),
+                                end: Offset(00.00, 0.00)).animate(CurvedAnimation(
+                                  parent: dpAnimationController,
+                                  curve: Curves.easeOut
+                              )
+                            ),
+                          )) 
+                            
+                            
+                        ),
                       ],
                     ),
                   )),
@@ -243,29 +350,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   flex: 60,
                   child: new Container(
                       //color: Colors.red,
-                      padding: EdgeInsets.all(10),
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        children: List.generate(10, (index) {
-                          return Container(
-                              padding: EdgeInsets.all(8),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Colors.purple[100],
-                                ),
-                                child: Center(
-                                    child: Text(
-                                  "Item $index",
-                                  style: TextStyle(
-                                      fontFamily: 'Karla', fontSize: 15),
-                                )),
-                              ));
-                        }),
-                      )))
+                      padding: EdgeInsets.fromLTRB(10, 2, 10, 0),
+                      child: grids,
+                    )
+                  )
             ],
           ),
-        ),
+        //),
+      )),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.done),
+        onPressed: (){
+          (slided)?dpAnimationController.forward():dpAnimationController.reverse();
+        //  (slided)?detailsAnimationController.forward():detailsAnimationController.reverse();
+          slided=!slided;
+        },
       ),
     );
   }
