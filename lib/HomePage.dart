@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:after_layout/after_layout.dart';
 import 'Config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   HomePage();
@@ -16,6 +17,7 @@ class _HomePageState extends State<HomePage>
   bool slided = false;
   bool visible =true;
   AnimationController dpAnimationController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   // AnimationController detailsAnimationController;
   static var list = List<Container>.generate(10, (index) {
     return Container(
@@ -57,7 +59,13 @@ class _HomePageState extends State<HomePage>
     dpAnimationController.dispose();
     super.dispose();
   }
-
+  _launchUrl() async{
+    const url ='https://github.com/vinx-2105/clubs_organiser';
+    if(await canLaunch(url))
+      await launch(url);
+    else  
+      throw 'could not launch';
+  }
   playNews() {
     var duration = Duration(seconds: 2);
     return new Timer(duration, () {
@@ -71,7 +79,7 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  var currentNav = 0;
+  var currentNav = 1;
   final pageController = new PageController();
   _animate(){
           if(slided){
@@ -93,7 +101,57 @@ class _HomePageState extends State<HomePage>
         }
   @override
   Widget build(BuildContext context) {
+    final _drawer=new Drawer(
+      child: new Container(
+        color: Colors.white,
+        child: ListView(
+          padding: EdgeInsets.all(0),
+          children: <Widget>[
+            DrawerHeader(
+              child: new Container(),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/iit_ropar.jpeg'),
+                  fit: BoxFit.fill
+                )
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text("Your Profile",style: TextStyle(fontSize: 17),),
+            ),
+            new Divider(indent: 10,color: Colors.grey,),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Join a club",style: TextStyle(fontSize: 17),),
+            ),
+            new Divider(indent: 10,color: Colors.grey,),
+            ListTile(
+              leading: Icon(Icons.create),
+              title: Text("Create a club",style: TextStyle(fontSize: 17),),
+            ),
+            new Divider(indent: 10,color: Colors.grey,),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("Settings",style: TextStyle(fontSize: 17),),
+            ),
+            new Divider(indent: 10,color: Colors.grey,),
+            ListTile(
+              leading: Icon(Icons.build),
+              title: Text("Contribute",style: TextStyle(fontSize: 17),),
+              onTap: ()=>_launchUrl(),
+            ),
+            new Divider(indent: 10,color: Colors.grey,),
+            ListTile(
+              leading: Icon(Icons.bug_report),
+              title: Text("Report a bug",style: TextStyle(fontSize: 17),),
+              onTap: (){},
+            ),
 
+          ],
+        ),
+      ),
+    );
 //---------------------------------------bottombar---------------------------------------------//
     final bottomBar = new Container(
       height: 50,
@@ -112,7 +170,12 @@ class _HomePageState extends State<HomePage>
                       color: (currentNav == 0)
                           ? Colors.greenAccent[400]
                           : Colors.white),
-                  onPressed: () => setState(() => currentNav = 0),
+                  onPressed: (){
+                    setState(() => {});
+                    //(!_scaffoldKey.currentState.isDrawerOpen)?
+                    _scaffoldKey.currentState.openDrawer();
+                    //_scaffoldKey.currentState.;
+                    },
                 )),
                 decoration: BoxDecoration(
                     color: (currentNav == 0)
@@ -205,7 +268,7 @@ class _HomePageState extends State<HomePage>
                       decoration: BoxDecoration(
                           color: Colors.greenAccent[400],
                           borderRadius: BorderRadius.circular(20)),
-                      padding: EdgeInsets.all(17),
+                      padding: EdgeInsets.fromLTRB(17, 17, 17, 5),
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,6 +303,7 @@ class _HomePageState extends State<HomePage>
                               child: new Container(
                                   child: PageView(
                                 children: List.generate(4, (index) {
+                                  
                                   var col = Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -263,18 +327,18 @@ class _HomePageState extends State<HomePage>
                                               "$index Event Name",
                                               style: TextStyle(
                                                   fontFamily: 'Karla',
-                                                  fontSize: 13,
+                                                  fontSize: 12,
                                                   color: Colors.black),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.all(6),
+                                              padding: EdgeInsets.all(3),
                                               child: new Container(),
                                             ),
                                             Text(
                                               "$index Event Time",
                                               style: TextStyle(
                                                   fontFamily: 'Karla',
-                                                  fontSize: 13,
+                                                  fontSize: 12,
                                                   color: Colors.black),
                                             ),
                                           ],
@@ -307,6 +371,7 @@ class _HomePageState extends State<HomePage>
                         )).value).toInt();
     
     return Scaffold(
+      key: _scaffoldKey,
       bottomNavigationBar: BottomAppBar(
         elevation: 16,
         child: bottomBar,
@@ -337,7 +402,9 @@ class _HomePageState extends State<HomePage>
                       ),
                       new Expanded(
                         flex: 5,
-                        child: Center(child:Icon(Icons.more_horiz,color: Colors.white,)),
+                        child: Center(child:IconButton(icon:Icon(Icons.more_horiz,color: Colors.white,),onPressed: (){
+                          _animate();
+                        },)),
                       )
                     ],
                   ),
@@ -369,6 +436,7 @@ class _HomePageState extends State<HomePage>
         child: Icon(Icons.done),
         onPressed: ()=>_animate() 
       ),
+      drawer: _drawer,
     );
   }
 }
