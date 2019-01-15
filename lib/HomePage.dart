@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   bool slided = false;
   bool visible =true;
   AnimationController dpAnimationController;
@@ -73,7 +73,24 @@ class _HomePageState extends State<HomePage>
 
   var currentNav = 0;
   final pageController = new PageController();
-
+  _animate(){
+          if(slided){
+            dpAnimationController.forward();
+            Timer(Duration(seconds:1),(){
+              //animate the expanded box by changing the flex
+              // make it go up
+              });
+          }
+          else{
+              Timer(Duration(seconds:1),(){
+              //animate the expanded box by changing the flex
+              // make it go down
+              });
+              dpAnimationController.reverse();
+          }
+        slided=!slided;
+          //initially slided is false so, when first time this function is called, animation goes reverse and changes the offset, object go out 
+        }
   @override
   Widget build(BuildContext context) {
 
@@ -154,11 +171,7 @@ class _HomePageState extends State<HomePage>
         children: <Widget>[
           new Expanded(
               flex: 35,
-              child: RotationTransition(
-                  turns: new Tween<double>(begin: 0.00, end: 0.00).animate(
-                      CurvedAnimation(
-                          parent: dpAnimationController, curve: Curves.easeIn)),
-                  child: SlideTransition(
+              child:  SlideTransition(
                     child: AspectRatio(
                         aspectRatio: 1,
                         child: new Container(
@@ -182,23 +195,17 @@ class _HomePageState extends State<HomePage>
                             end: Offset(00.00, 0.00))
                         .animate(CurvedAnimation(
                             parent: dpAnimationController,
-                            curve: Curves.easeOut)),
-                  ))),
+                            curve: Interval(0.00, 0.70,curve: Curves.easeOut))),
+                  )),
           new Expanded(flex: 5, child: new Container()),
           new Expanded(
               flex: 60,
-              child: RotationTransition(
-                  turns: new Tween<double>(begin: 0.00, end: 0.00)
-                      .animate(CurvedAnimation(
-                    parent: dpAnimationController,
-                    curve: Curves.elasticIn,
-                  )),
-                  child: SlideTransition(
+              child:  SlideTransition(
                     child: new Container(
                       decoration: BoxDecoration(
                           color: Colors.greenAccent[400],
                           borderRadius: BorderRadius.circular(20)),
-                      padding: EdgeInsets.all(19),
+                      padding: EdgeInsets.all(17),
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,14 +293,19 @@ class _HomePageState extends State<HomePage>
                             end: Offset(00.00, 0.00))
                         .animate(CurvedAnimation(
                             parent: dpAnimationController,
-                            curve: Curves.easeOut)),
-                  ))),
+                            curve: Interval(0.00, 0.70,curve: Curves.easeOut)
+                            )),
+                  )),
         ],
       ),
     );
 //---------------------------------topdetails-end---------------------------------//
     if (!slided) dpAnimationController.forward();
-
+    int flex1=28 -(28* Tween<double>(begin:1.00,end:0.00).animate(CurvedAnimation(
+                          parent: dpAnimationController,
+                          curve: Interval(0.75, 1.00,curve: Curves.elasticOut)
+                        )).value).toInt();
+    
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         elevation: 16,
@@ -312,15 +324,34 @@ class _HomePageState extends State<HomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Expanded(
-                  flex: 5,
+                  flex: 4,
                   child: Container(),
                 ),
                 Expanded(
-                  flex: 29,
-                  child: topDetails,
+                  flex: flex1+3,
+                  child: new GestureDetector(child: new Column(
+                    children: <Widget>[
+                      new Expanded(
+                        flex:flex1,
+                        child: (flex1>25)?topDetails:new Container(),
+                      ),
+                      new Expanded(
+                        flex: 5,
+                        child: Center(child:Icon(Icons.more_horiz,color: Colors.white,)),
+                      )
+                    ],
+                  ),
+                  onHorizontalDragEnd: (DragEndDetails details){
+                    Offset v=details.velocity.pixelsPerSecond;
+                    print(v);
+                    if(v.dy<-400 || v.dy>400){
+                      _animate();
+                    }                    
+                  },
+                  ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 1,
                   child: Container(),
                 ),
                 Expanded(
@@ -336,24 +367,7 @@ class _HomePageState extends State<HomePage>
           )),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.done),
-        onPressed: () {
-          if(slided){
-            dpAnimationController.forward();
-            Timer(Duration(seconds:1),(){
-              //animate the expanded box by changing the flex
-              // make it go up
-              });
-          }
-          else{
-              Timer(Duration(seconds:1),(){
-              //animate the expanded box by changing the flex
-              // make it go down
-              });
-              dpAnimationController.reverse();
-          }
-        
-          //initially slided is false so, when first time this function is called, animation goes reverse and changes the offset, object go out 
-        },
+        onPressed: ()=>_animate() 
       ),
     );
   }
