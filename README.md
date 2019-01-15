@@ -13,6 +13,7 @@ Our aim as a developer is to provide clean, beautiful, modern UI with smooth ani
 
 ## Contribute
 If you want to contribute fork this repo, code your changes, create a pull request. To join our discussion group mail chhabra99yogesh@gmail.com or 2017csb1119@iitrpr.ac.in
+General issues are regularly added, you can always resolve them and send a pull request.
 
 ### License
 You can use any line of code uploaded here for any purpose. :)
