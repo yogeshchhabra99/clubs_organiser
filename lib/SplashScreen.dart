@@ -39,7 +39,7 @@ class SplashScreen extends StatelessWidget{
                 
                 new Expanded(
                   flex: 1,
-                  child:Center(child: Text(Config.title,style: TextStyle(color: Colors.green[400],fontSize: 40),),
+                  child:Center(child: Text(Config.title.toUpperCase(),style: TextStyle(color: Colors.green[400],fontSize: 40),),
                 )),
                 new Expanded(
                   flex: 1,

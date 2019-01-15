@@ -28,10 +28,35 @@ class _HomePageState extends State<HomePage>
             color: Colors.white,
           ),
           child: Center(
-              child: Text(
-            "Item $index",
-            style: TextStyle(fontFamily: 'Karla', fontSize: 15),
-          )),
+            child:ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                new Container(
+                  height: 70,
+                  width: 70,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image:AssetImage('assets/club.jpg')
+                   // color: Colors.green[400],
+                    ),
+                  shape: BoxShape.circle,
+                  ),
+                ),
+                new Center(child:Text(
+                  "Club ${index+1}",
+                  style: TextStyle(fontFamily: 'Karla', fontSize: 15),
+                )),
+                new Container(child:ListTile(
+                  leading: new Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/dp2.jpeg'))),),
+                  title: Text("Yogesh Chhabra"),
+                ),),
+                new Container(child:ListTile(
+                  leading: new Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/vineet.png'))),),
+                  title: Text("Vineet Madan"),
+                ))
+              ],
+            ),
+           ),
         ));
   });
   var grids = GridView.count(
