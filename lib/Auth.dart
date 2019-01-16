@@ -46,7 +46,7 @@ class SignIn{
     }
     
   }
-  static Future<User> checkUser() async{
+  static Future<User> getUser() async{
     try{
       SharedPreferences prefs=await SharedPreferences.getInstance();
       String idToken=await prefs.getString('idToken');
