@@ -4,6 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:after_layout/after_layout.dart';
 import 'Config.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'Modals.dart';
+import 'SplashScreen.dart';
+import 'Auth.dart';
 
 class HomePage extends StatefulWidget {
   HomePage();
@@ -14,6 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin {
+  User user;
   bool slided = false;
   bool visible =true;
   AnimationController dpAnimationController;
@@ -67,7 +72,10 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     // TODO: implement initState
-
+    SignIn.getUser().then((User user1)=>user=user1).then((e){
+      print(e);
+      Navigator.of(context).pushReplacementNamed(SplashScreen.tag);
+    });
     dpAnimationController = new AnimationController(
         duration: const Duration(milliseconds: 700), vsync: this)
       ..addListener(() {
@@ -301,7 +309,7 @@ class _HomePageState extends State<HomePage>
                           Expanded(
                             flex: 5,
                             child: Text(
-                              "Yogesh Chhabra",
+                              "${user.name}",
                               style: TextStyle(
                                   fontFamily: 'Karla',
                                   fontSize: 23,

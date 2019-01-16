@@ -2,13 +2,38 @@ import 'package:flutter/material.dart';
 import 'Config.dart';
 import 'dart:async';
 import 'HomePage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'Auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'Modals.dart';
 
 class SplashScreen extends StatelessWidget{
   home(BuildContext context){
-   // var duration= Duration(seconds: 2);
-   // return new Timer(duration,(){
       Navigator.of(context).pushReplacementNamed(HomePage.tag);
-   // });
+  }
+
+  handleAuth(BuildContext context) async {
+    User user;
+    try{
+       user = await SignIn.getUser();
+    }catch(e){
+      print(e);
+      user.id=null;
+    }
+    if(user.id!=null){
+      home(context);
+    }
+    else{
+      try{
+        User user= await  SignIn.handleSignIn();
+        SignIn.saveUser(user);
+        home(context);
+      }catch(e){
+        print(e);
+        //TODO call ShowToast to show a toast
+      }
+    }
   }
 
 
@@ -46,7 +71,7 @@ class SplashScreen extends StatelessWidget{
                   child: new Container(
                     child: FlatButton(
                       
-                      onPressed: ()=> home(context),
+                      onPressed:()=> handleAuth(context) ,//home(context),
                       child: Text("ENTER",style:TextStyle(
                         fontSize: 30,
                         color: Colors.white,
