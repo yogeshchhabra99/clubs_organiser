@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage>
     // TODO: implement initState
 
     dpAnimationController = new AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this)
+        duration: const Duration(milliseconds: 700), vsync: this)
       ..addListener(() {
         setState(() {
           // the state that has changed here is the animation object’s value
@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage>
   _animate(){
           if(slided){
             dpAnimationController.forward();
-            Timer(Duration(seconds:1),(){
+            Timer(Duration(seconds: 1),(){
               //animate the expanded box by changing the flex
               // make it go up
               });
@@ -279,11 +279,11 @@ class _HomePageState extends State<HomePage>
 
                         ),
                     position: new Tween<Offset>(
-                            begin: Offset(-50.00, 0.00),
+                            begin: Offset(-20.00, 0.00),
                             end: Offset(00.00, 0.00))
                         .animate(CurvedAnimation(
                             parent: dpAnimationController,
-                            curve: Interval(0.00, 0.70,curve: Curves.easeOut))),
+                            curve: Interval(0.06, 0.60,curve: Curves.easeOut))),
                   )),
           new Expanded(flex: 5, child: new Container()),
           new Expanded(
@@ -378,11 +378,11 @@ class _HomePageState extends State<HomePage>
                       ),
                     ),
                     position: new Tween<Offset>(
-                            begin: Offset(0.00, -50.00),
+                            begin: Offset(0.00, -20.00),
                             end: Offset(00.00, 0.00))
                         .animate(CurvedAnimation(
                             parent: dpAnimationController,
-                            curve: Interval(0.00, 0.70,curve: Curves.easeOut)
+                            curve: Interval(0.06, 0.60,curve: Curves.easeOut)
                             )),
                   )),
         ],
@@ -392,7 +392,7 @@ class _HomePageState extends State<HomePage>
     if (!slided) dpAnimationController.forward();
     int flex1=28 -(28* Tween<double>(begin:1.00,end:0.00).animate(CurvedAnimation(
                           parent: dpAnimationController,
-                          curve: Interval(0.75, 1.00,curve: Curves.elasticOut)
+                          curve: Interval(0.10, 0.25,curve: Curves.easeIn)
                         )).value).toInt();
     
     return Scaffold(
