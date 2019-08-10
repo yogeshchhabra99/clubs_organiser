@@ -5,4 +5,5 @@ class Config{
   static Color backgroundColor =Colors.black;
   static Color primaryColor =Colors.green[400];
   static Color secondaryColor=Colors.white;
+  
 }
